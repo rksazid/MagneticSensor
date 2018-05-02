@@ -1,6 +1,7 @@
 package com.csekuet14.rksazid.magneticsensor;
 
 import android.app.ProgressDialog;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements  SensorEventListe
     float magnitude = 0,x,y,z;
     int max = 200;
     ProgressBar progressBar;
+    MediaPlayer beep;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,8 @@ public class MainActivity extends AppCompatActivity implements  SensorEventListe
         Mtext = findViewById(R.id.m_textView);
         magnetDetecTextView = findViewById(R.id.magnet_detect_textView);
         progressBar = findViewById(R.id.magnetic_progressbar);
+        beep = MediaPlayer.create(MainActivity.this, R.raw.beep);
+
         progressBar.setMax(max);
     }
 
@@ -46,8 +50,10 @@ public class MainActivity extends AppCompatActivity implements  SensorEventListe
         max = (magnitude>max)? (int) magnitude : max;
         progressBar.setMax(max);
         progressBar.setProgress((int) magnitude);
-        if(magnitude>60.0)
+        if(magnitude>60.0) {
             magnetDetecTextView.setText("Magnet Detected!!!!");
+            beep.start();
+        }
         else magnetDetecTextView.setText("");
         Mtext.setText(String.valueOf(magnitude)+"µT");
 
